@@ -20,11 +20,8 @@
 - name: install java
   tags: [java]
   yum:
-    name: "{{ item }}"
+    name: ["{{ java_version }}", "{{ java_version }}-devel"]
     state: installed
-  with_items:
-    - "{{ java_version }}"
-    - "{{ java_version }}-devel"
 
 - name: set JAVA_HOME
   tags: [java]

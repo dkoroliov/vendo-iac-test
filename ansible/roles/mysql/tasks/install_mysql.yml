@@ -15,12 +15,8 @@
 
 - name: Install DB server packages
   yum:
-    pkg: "{{ item }}"
+    pkg: "{{ db_packages }}"
     state: latest
-  with_items:
-    - MariaDB-server
-    - MariaDB-client
-    - MySQL-python
   register: install_mysql
 
 - name: set service restart method to "systemd"
