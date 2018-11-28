@@ -4,6 +4,7 @@ This repo contains a slimmed down replica of the codebase of 2 frameworks used i
 *terraform*: Code to create the AWS cloud infrastructure: VPC, Subnets, security groups, RDS instance, "app" server autoscaling group, bastion server etc.
   - this code is tested for terraform v0.9.11
   - There may be a small cost associated with creating this infrastructure. If this is going to be a problem, please let us know.
+
 *ansible*: Code to configure the components. Mainly the EC2 instances.
 
 # Setup
