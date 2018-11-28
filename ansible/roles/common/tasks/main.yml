@@ -10,17 +10,8 @@
 - name: Install common packages
   tags: [yum] # for SELINUX policycoreutils-python
   yum:
-    pkg: "{{ item }}"
+    pkg: "{{ common_packages }}"
     state: installed
-  with_items:
-    - git
-    - mlocate
-    - expect
-    - bind-utils
-    - MySQL-python
-    - python-setuptools
-    - screen
-    - sysstat
 
 - name: Update locate database
   command: updatedb
