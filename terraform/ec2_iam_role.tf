@@ -33,7 +33,9 @@ resource "aws_iam_role_policy" "ec2_tags" {
             "Effect": "Allow",
             "Action": [
                 "ec2:Describe*",
-                "ec2:CreateTags"
+                "ec2:CreateTags",
+                "rds:Describe*",
+                "rds:List*"
             ],
             "Resource": "*"
         }

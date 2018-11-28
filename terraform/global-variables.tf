@@ -3,6 +3,10 @@ variable "role_arn" {
   default = "arn:aws:iam::948635675146:role/OrganizationAccountAccessRole"
 }
 
+variable "region" {
+  default = "eu-west-1"
+}
+
 variable "iac_repo_url" {
   default = "https://github.com/lbadmin/vendo-iac-test.git"
 }
