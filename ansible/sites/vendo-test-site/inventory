@@ -1,0 +1,10 @@
+# File: ansible/sites/vendo-test-site/inventory
+# Inventory file for vendo-test-site environment. The IPs of these hosts are based on "type" tags in EC2 and dynamically assigned by ec2.py when ansible is called.
+#
+# Map the ec2 groups (from the dynamic inventory ec2.py) to our groups.
+# This merges the static and dynamic inventory.
+
+[tag_Type_app_servers]
+
+[app_servers:children]
+tag_Type_app_servers
