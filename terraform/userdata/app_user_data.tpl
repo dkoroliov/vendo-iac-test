@@ -8,10 +8,6 @@ packages:
 - wget
 - bind-utils
 - epel-release
-- httpd
-- php
-- php-mysql
-- mariadb
 runcmd:
 - wget  https://bootstrap.pypa.io/get-pip.py -O /tmp/get-pip.py
 - python /tmp/get-pip.py
@@ -32,8 +28,7 @@ runcmd:
 - sed -i "s/#compress/compress/g" /etc/logrotate.conf
 - sed -i "s/HOSTNAME=localhost.localdomain/HOSTNAME=$FQDN/g" /etc/sysconfig/network
 - echo "$IP_ADDRESS $FQDN" >> /etc/hosts
-- aws ec2 create-tags --resources $INSTANCE_ID --tags Key=Name,Value=$ENVIRONMENT-$ROLE-$INSTANCE_ID
-#- sed -i "s/SELINUX=enforcing/SELINUX=disabled/" /etc/selinux/config
+- aws ec2 create-tags --resources $INSTANCE_ID --tags Key=Name,Value=$ENVIRONMENT-$ROLE-$INSTANCE_ID Key=Type,Value=$ROLE
 - setsebool -P httpd_can_network_connect=1
 - systemctl enable httpd
 - systemctl start httpd
@@ -44,12 +39,7 @@ runcmd:
 - python /tmp/get-pip.py
 - /bin/pip install awscli boto boto3
 - /bin/pip install --upgrade jinja2
-
-# phpMiniAdmin
-- git clone https://github.com/osalabs/phpminiadmin.git /var/www/html/
-- cp /var/www/html/samples/phpminiconfig.php /var/www/html/
-- sed -i "s/'user'=>''.*$/'user'=>'${db_user}',/" /var/www/html/phpminiconfig.php
-- sed -i "s/'pwd'=>''.*$/'pwd'=>'${db_pass}',/" /var/www/html/phpminiconfig.php
-- sed -i "s/'host'=>''.*$/'host'=>'${db_host}',/" /var/www/html/phpminiconfig.php
-- sed -i "s/'port'=>''.*$/'port'=>'${db_port}',/" /var/www/html/phpminiconfig.php
-- ln -s /var/www/html/phpminiadmin.php /var/www/html/index.php
+- echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
+- git clone ${iac_repo_url} /root/vendo-iac-test
+- echo ${vault_password} > /root/.vaultpass
+- ansible-playbook -i /root/${environment}/ansible/sites/vendo-test-site /root/${environment}/ansible/site.yml -l `hostname -i` -c local --vault-password-file=/root/.vaultpass

@@ -1,0 +1,40 @@
+---
+# handlers file for common
+# ignore_errors so this will succeed even if services are initially in stopped state
+- name: restart-apache
+  become: yes
+  service: name=httpd state=restarted
+  ignore_errors: yes
+
+- name: restart-redis
+  become: yes
+  service:
+    name: redis
+    state: restarted
+  ignore_errors: yes
+
+- name: restart-fpm
+  become: yes
+  service:
+    name: php-fpm
+    state: restarted
+  ignore_errors: yes
+
+- name: yum-clean-metadata
+  become: yes
+  command: yum clean metadata
+  args:
+    warn: no
+
+- name: rebuild-initramfs
+  command: dracut -v -f
+#  notify: reboot # causes too many issues in Vagrant, packer etc.
+
+- name: reboot
+  shell: nohup bash -c "sleep 2s && shutdown -r now" &
+
+- name: flush-cache
+  get_url: url=http://localhost/api/flush-cache/all dest=/dev/null force=yes
+
+- name: run-acls
+  command: php {{ neo_basedir }}/application/modules/backoffice/cli/tools/acl-new.php -p {{ neo_basedir }}/application/modules/backoffice/controllers

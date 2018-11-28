@@ -1,0 +1,14 @@
+# file: roles/dbserver/tasks/main.yml
+---
+
+- include: install_mysql.yml
+
+- name: Start Mysql server
+  service:
+    name: "{{ mysql_binary }}"
+    state: started
+    enabled: yes
+
+- include: mysql_secure_installation.yml
+  tags: [secure]
+  when: install_mysql.changed

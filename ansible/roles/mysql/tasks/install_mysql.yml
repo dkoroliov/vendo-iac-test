@@ -1,0 +1,42 @@
+---
+# Install MariaDB
+
+- name: Add MariaDB repo
+  tags: [yum, mysql, mariadb]
+  yum_repository:
+    name: MariaDB
+    description: MariaDB 5.5 CentOS repository
+    baseurl: "{{ mariadb_baseurl }}"
+
+- name: Import MariaDB GPG key.
+  rpm_key:
+    key: "{{ mariadb_gpgkey }}"
+    state: present
+
+- name: Install DB server packages
+  yum:
+    pkg: "{{ item }}"
+    state: latest
+    enablerepo: remi-safe
+  with_items:
+    - MariaDB-server
+    - MariaDB-client
+#    - mysql-libs
+    - MySQL-python
+  register: install_mysql
+
+- name: set service restart method to "systemd"
+  set_fact:
+    mysql_restart_method: systemd
+
+- name: set mysql binary name to "mysql"
+  set_fact:
+    mysql_binary: mysql
+
+- name: set openfile limits
+  tags: [limits]
+  lineinfile:
+    path: /usr/lib/systemd/system/mariadb.service
+    regexp: "^LimitNOFILE"
+    line: "LimitNOFILE=65535"
+  notify: restart-mariadb

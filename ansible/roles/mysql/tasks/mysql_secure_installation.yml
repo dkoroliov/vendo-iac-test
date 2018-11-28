@@ -1,0 +1,52 @@
+## file: roles/mysql/tasks/mysql_secure_installation.yml
+---
+#- debug: var=ansible_hostname
+
+- name: Allow root user connections from anywhere when local install
+  mysql_user:
+    name: "{{ root_db_user }}"
+    password: "{{ root_db_password }}"
+    priv: "*.*:ALL,GRANT"
+    host: "%"
+  when: site.startswith('local') and install_mysql is defined and install_mysql.changed
+
+# order of with_items is important.
+# root@localhost must always be changed last since that's the user that is performing the operation.
+# In many groups['app_servers'] also includes 'localhost' 
+- name: Change root user password on first run
+  mysql_user:
+    name: "{{ root_db_user }}"
+    password: "{{ root_db_password }}"
+    priv: "*.*:ALL,GRANT"
+    host: "{{ item }}"
+  with_items:
+    - 127.0.0.1
+    - ::1
+    - "{{ ansible_nodename }}"
+    - localhost
+  when: install_mysql is defined and install_mysql.changed
+
+- name: show mysql users
+  command: "mysql -uroot -ptoor -e'select user,host from mysql.user'"
+
+- name: remove the MySQL test database
+  mysql_db:
+    login_user: "{{ root_db_user }}"
+    login_password: "{{ root_db_password }}"
+    db: test
+    state: absent
+
+- name: delete anonymous MySQL server user for {{ ansible_hostname }}
+  mysql_user:
+    login_user: "{{ root_db_user }}"
+    login_password: "{{ root_db_password }}"
+    user: ""
+    host: "{{ ansible_hostname }}.local"
+    state: "absent"
+
+- name: delete anonymous MySQL server user for localhost
+  mysql_user:
+    login_user: "{{ root_db_user }}"
+    login_password: "{{ root_db_password }}"
+    user: ""
+    state: absent

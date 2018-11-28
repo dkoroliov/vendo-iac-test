@@ -1,10 +1,3 @@
-# insert list of whitelisted IPs here
-variable "whitelisted_ips" {
-  default = [
-    "1.2.3.4/32",
-  ]
-}
-
 # create a security group for ssh access to the bastion
 resource "aws_security_group" "bastion-ssh-sg" {
   name        = "terraform_bastion_ssh_sg"
@@ -33,8 +26,8 @@ data "template_file" "bastion_cloud_init" {
   template = "${file("userdata/bastion_user_data.tpl")}"
 
   vars {
-    role        = "bastion"
-    environment = "dev"
+    role           = "bastion_servers"
+    environment    = "${var.environment}"
   }
 }
 
@@ -42,7 +35,7 @@ data "template_file" "bastion_cloud_init" {
 resource "aws_instance" "bastion" {
   instance_type               = "t2.micro"
   ami                         = "ami-061b1560"
-  key_name                    = "vendo-dev"
+  key_name                    = "${var.ec2_key_name}"
   vpc_security_group_ids      = ["${aws_security_group.bastion-ssh-sg.id}"]
   subnet_id                   = "${aws_subnet.public.0.id}"
   associate_public_ip_address = "true"
@@ -51,5 +44,5 @@ resource "aws_instance" "bastion" {
 }
 
 output "bastion" {
-  value = "${aws_instance.bastion.public_ip}"
+  value = "${aws_instance.bastion.public_dns}"
 }

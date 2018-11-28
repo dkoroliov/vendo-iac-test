@@ -1,0 +1,3 @@
+# file: ansible/group_vars/all.yml
+---
+java_version: java-1.8.0-openjdk

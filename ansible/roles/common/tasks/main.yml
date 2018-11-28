@@ -1,0 +1,42 @@
+# file: ansible/roles/common/tasks/main.yml
+---
+
+- name: Update packages
+  tags: [yum]
+  yum:
+    name: '*'
+    state: latest
+
+- name: Install common packages
+  tags: [yum] # for SELINUX policycoreutils-python
+  yum:
+    pkg: "{{ item }}"
+    state: installed
+  with_items:
+    - git
+    - mlocate
+    - expect
+    - bind-utils
+    - MySQL-python
+    - python-setuptools
+    - screen
+    - sysstat
+
+- name: Update locate database
+  command: updatedb
+  ignore_errors: yes
+
+- name: install java
+  tags: [java]
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - "{{ java_version }}"
+    - "{{ java_version }}-devel"
+
+- name: set JAVA_HOME
+  tags: [java]
+  template:
+    src: profile.d_jdk_home.sh.j2
+    dest: /etc/profile.d/jdk_home.sh

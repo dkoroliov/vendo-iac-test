@@ -1,0 +1,6 @@
+# file: app_servers.yml
+---
+
+- hosts: app_servers
+  roles:
+    - { role: mysql, become: yes, tags: [mysql] }

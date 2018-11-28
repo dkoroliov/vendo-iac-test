@@ -38,12 +38,10 @@ data "template_file" "app_cloud_init" {
   template = "${file("userdata/app_user_data.tpl")}"
 
   vars {
-    role        = "techdemo-app"
-    environment = "dev"
-    db_host     = "${aws_db_instance.techdemo_rds.address}"
-    db_port     = "${aws_db_instance.techdemo_rds.port}"
-    db_user     = "${aws_db_instance.techdemo_rds.username}"
-    db_pass     = "${aws_db_instance.techdemo_rds.password}"
+    role           = "app_servers"
+    environment    = "${var.environment}"
+    vault_password = "${var.vault_password}"
+    iac_repo_url   = "${var.iac_repo_url}"
   }
 }
 
@@ -51,7 +49,7 @@ resource "aws_launch_configuration" "app_launch_config" {
   name_prefix                 = "techdemo-app-"
   image_id                    = "ami-061b1560"
   instance_type               = "t2.micro"
-  key_name                    = "vendo-dev"
+  key_name                    = "${var.ec2_key_name}"
   security_groups             = ["${concat(list(aws_security_group.alb_ec2.id, aws_security_group.ec2_sg.id, aws_security_group.ec2_ssh.id))}"]
   user_data                   = "${data.template_file.app_cloud_init.rendered}"
   associate_public_ip_address = "false"
