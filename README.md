@@ -29,8 +29,8 @@ In a new branch, submit a pull request that creates Terraform and Ansible config
   - The documentroot of the virtualhost should be a new directory on the server called `/applications/vendo-iac-test`
   - PHP should be configured to use the Memcache Elasticache cluster as a session save path
   - The "application" in this directory should consist of a PHP file which does the following:
-    - Connect to the RDS database created in terraform/rds_db.tf
-    - output a list of tables in all databases on the RDS instance
-1. When the instances in your new ASG come up, they should pull this repo (or your fork of it) and execute an Ansible playbook that applies the two new roles to themselves.
+    - Connect to the RDS database created in terraform/rds_db.tf and output a list of tables in all databases on the RDS instance
+    - Output the contents of the phpinfo() command
+1. When the instances in your new ASG come up, they should pull this repo (or your fork of it) and execute an Ansible playbook to apply the Apache & PHP roles to themselves.
 1. Terraform should output the public DNS of the Elastic load balancer that, when inserted in a browser, should show the listing of the database tables.
   - This DNS endpoint should be accessible to the public
