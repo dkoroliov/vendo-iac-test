@@ -17,11 +17,9 @@
   yum:
     pkg: "{{ item }}"
     state: latest
-    enablerepo: remi-safe
   with_items:
     - MariaDB-server
     - MariaDB-client
-#    - mysql-libs
     - MySQL-python
   register: install_mysql
 
