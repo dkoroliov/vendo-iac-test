@@ -75,9 +75,6 @@ resource "aws_autoscaling_group" "app_autoscaling_group" {
   launch_configuration      = "${aws_launch_configuration.app_launch_config.name}"
   health_check_grace_period = "300"
   health_check_type         = "EC2"
-
-  #protect_from_scale_in     = "false"
-
   target_group_arns = ["${aws_alb_target_group.alb_http_tg.id}"]
   depends_on = [
     "aws_launch_configuration.app_launch_config",
