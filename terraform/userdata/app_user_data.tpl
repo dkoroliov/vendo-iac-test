@@ -22,16 +22,12 @@ runcmd:
 - aws configure set default.output text
 - ENVIRONMENT="${environment}"
 - ROLE="${role}"
-- aws ec2 create-tags --resources $INSTANCE_ID --tags Key=Name,Value=$ENVIRONMENT-$ROLE-$INSTANCE_ID
 - FQDN=$ENVIRONMENT-$ROLE-$INSTANCE_ID.$DOMAIN
 - hostname $FQDN
 - sed -i "s/#compress/compress/g" /etc/logrotate.conf
 - sed -i "s/HOSTNAME=localhost.localdomain/HOSTNAME=$FQDN/g" /etc/sysconfig/network
 - echo "$IP_ADDRESS $FQDN" >> /etc/hosts
 - aws ec2 create-tags --resources $INSTANCE_ID --tags Key=Name,Value=$ENVIRONMENT-$ROLE-$INSTANCE_ID Key=Type,Value=$ROLE
-- setsebool -P httpd_can_network_connect=1
-- systemctl enable httpd
-- systemctl start httpd
 
 # Ansible
 - yum install -y ansible
