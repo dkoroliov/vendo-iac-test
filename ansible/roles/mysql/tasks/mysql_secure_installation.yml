@@ -1,18 +1,5 @@
 ## file: roles/mysql/tasks/mysql_secure_installation.yml
 ---
-#- debug: var=ansible_hostname
-
-- name: Allow root user connections from anywhere when local install
-  mysql_user:
-    name: "{{ root_db_user }}"
-    password: "{{ root_db_password }}"
-    priv: "*.*:ALL,GRANT"
-    host: "%"
-  when: site.startswith('local') and install_mysql is defined and install_mysql.changed
-
-# order of with_items is important.
-# root@localhost must always be changed last since that's the user that is performing the operation.
-# In many groups['app_servers'] also includes 'localhost' 
 - name: Change root user password on first run
   mysql_user:
     name: "{{ root_db_user }}"
