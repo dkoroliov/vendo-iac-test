@@ -1,12 +1,6 @@
 # file: ansible/roles/common/tasks/main.yml
 ---
 
-- name: Update packages
-  tags: [yum]
-  yum:
-    name: '*'
-    state: latest
-
 - name: Install common packages
   tags: [yum] # for SELINUX policycoreutils-python
   yum:

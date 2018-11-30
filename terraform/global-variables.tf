@@ -26,7 +26,8 @@ variable "vpc_cidr_block" {
 # insert list of whitelisted IPs here
 variable "whitelisted_ips" {
   default = [
-    "213.27.207.74/32", # vendo office
+    "213.27.207.74/32", # office
+    "90.173.150.168/32" # home
   ]
 }
 
