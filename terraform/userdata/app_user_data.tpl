@@ -36,6 +36,6 @@ runcmd:
 - /bin/pip install awscli boto boto3
 - /bin/pip install --upgrade jinja2
 - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
-- git clone ${iac_repo_url} /root/vendo-iac-test
+- git clone ${iac_repo_url} /root/${environment}
 - echo ${vault_password} > /root/.vaultpass
 - ansible-playbook -i /root/${environment}/ansible/sites/vendo-test-site /root/${environment}/ansible/site.yml -l `hostname -i` -c local --vault-password-file=/root/.vaultpass

@@ -16,7 +16,7 @@ variable "ec2_key_name" {
 }
 
 variable "environment" {
-  default = "vendo-iac-test"
+  default = "vendo-iac"
 }
 
 variable "vpc_cidr_block" {
