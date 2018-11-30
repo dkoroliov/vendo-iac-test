@@ -1,6 +1,6 @@
 # create application load balancer
 resource "aws_alb" "app_alb" {
-  name            = "techdemo-app-alb"
+  name            = "vendo-iac-app-alb"
   subnets         = ["${aws_subnet.public.*.id}"]
   security_groups = ["${aws_security_group.alb_sg.id}"]
   internal        = "false"
@@ -8,10 +8,10 @@ resource "aws_alb" "app_alb" {
 
 # create target group for app servers
 resource "aws_alb_target_group" "alb_http_tg" {
-  name                 = "techdemo-app-tg"
+  name                 = "vendo-iac-app-tg"
   port                 = 80
   protocol             = "HTTP"
-  vpc_id               = "${aws_vpc.techdemo_vpc.id}"
+  vpc_id               = "${aws_vpc.vendo-iac_vpc.id}"
   deregistration_delay = "10"
 
   health_check {
@@ -46,7 +46,7 @@ data "template_file" "app_cloud_init" {
 }
 
 resource "aws_launch_configuration" "app_launch_config" {
-  name_prefix                 = "techdemo-app-"
+  name_prefix                 = "vendo-iac-app-"
   image_id                    = "ami-061b1560"
   instance_type               = "t2.micro"
   key_name                    = "${var.ec2_key_name}"
@@ -54,7 +54,7 @@ resource "aws_launch_configuration" "app_launch_config" {
   user_data                   = "${data.template_file.app_cloud_init.rendered}"
   associate_public_ip_address = "false"
   enable_monitoring           = "false"
-  iam_instance_profile        = "${aws_iam_instance_profile.techdemo_profile.name}"
+  iam_instance_profile        = "${aws_iam_instance_profile.vendo-iac_profile.name}"
 
   lifecycle {
     create_before_destroy = true
@@ -67,7 +67,7 @@ resource "aws_launch_configuration" "app_launch_config" {
 }
 
 resource "aws_autoscaling_group" "app_autoscaling_group" {
-  name                      = "techdemo-app-asg"
+  name                      = "vendo-iac-app-asg"
   min_size                  = "1"
   max_size                  = "1"
   desired_capacity          = "1"
@@ -85,6 +85,6 @@ resource "aws_autoscaling_group" "app_autoscaling_group" {
   }
 }
 
-output "alb_dns" {
+output "app_alb_dns" {
   value = "${aws_alb.app_alb.dns_name}"
 }

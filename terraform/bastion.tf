@@ -2,7 +2,7 @@
 resource "aws_security_group" "bastion-ssh-sg" {
   name        = "terraform_bastion_ssh_sg"
   description = "ssh access to the bastion"
-  vpc_id      = "${aws_vpc.techdemo_vpc.id}"
+  vpc_id      = "${aws_vpc.vendo-iac_vpc.id}"
 
   # SSH access from whitelisted IPs
   ingress {
@@ -39,7 +39,7 @@ resource "aws_instance" "bastion" {
   vpc_security_group_ids      = ["${aws_security_group.bastion-ssh-sg.id}"]
   subnet_id                   = "${aws_subnet.public.0.id}"
   associate_public_ip_address = "true"
-  iam_instance_profile        = "${aws_iam_instance_profile.techdemo_profile.name}"
+  iam_instance_profile        = "${aws_iam_instance_profile.vendo-iac_profile.name}"
   user_data                   = "${data.template_file.bastion_cloud_init.rendered}"
 }
 

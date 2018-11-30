@@ -45,7 +45,7 @@ EOF
 }
 
 # create an instance profile of the role to be used when bringing up instances
-resource "aws_iam_instance_profile" "techdemo_profile" {
-  name = "techdemo_profile"
+resource "aws_iam_instance_profile" "vendo-iac_profile" {
+  name = "vendo-iac_profile"
   role = "${aws_iam_role.iam_role.id}"
 }
