@@ -20,15 +20,15 @@ This repo contains a slimmed down replica of the codebase of 2 frameworks used i
    * **vpc_cidr_block** (optional): If your AWS account already has a VPC, you can change the VPC CIDR created here so it doesn't overlap.
 
 # Task
-In a new branch, submit a pull request that creates Terraform and Ansible configuration to do the following:
+In a new branch, submit a Merge Request that creates Terraform and Ansible configuration to do the following:
 1. Create an AWS Elastic load balancer distributing requests to a new EC2 autoscaling group (can be an ASG of just 1 instance)
-   * create all the associated configs (target group, launch config, security groups etc.)
+   * create all the associated configs: target group, launch config, security groups etc.
    * Instances created in this ASG should be tagged with "Type=web_servers"
 1. Create a Memcache Elasticache cluster that is accessible by the instances in the ASG created above
 1. Create 2 Ansible roles: one to install Apache, another to install PHP.
    * Apache should be configured with a virtualhost listening on all IPs
    * The documentroot of the virtualhost should be a new directory on the web server(s) called `/applications/vendo-iac-test`
-   * PHP should be configured to use the Memcache Elasticache cluster as a session save path
+   * PHP should be configured to use the Memcache Elasticache cluster as its session save path
    * The "application" in this directory should consist of a PHP file which does the following:
      * Connect to the RDS database created in terraform/rds_db.tf and output a list of tables in all databases on the RDS instance
      * Output the contents of the phpinfo() command
