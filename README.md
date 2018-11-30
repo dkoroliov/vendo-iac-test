@@ -1,11 +1,11 @@
 # Introduction
 This repo contains a slimmed down replica of the codebase of 2 frameworks used in Vendo to manage our cloud resources
 
-**terraform**: Code to create the AWS cloud infrastructure: VPC, Subnets, security groups, RDS instance, "app" server autoscaling group, bastion server etc.
+**Terraform**: Code to create the AWS cloud infrastructure: VPC, Subnets, security groups, RDS instance, "app" server autoscaling group, bastion server etc.
   * This code is tested for terraform v0.9.11
   * There may be a small cost associated with creating this infrastructure. If this is going to be a problem, please let us know.
 
-*ansible*: Code to configure the components. Mainly the EC2 instances.
+**Ansible**: Code to configure the infrastructure. Mainly the EC2 instances.
 
 # Setup
 After forking this repo you can set up an environment in which to execute this code for testing.
