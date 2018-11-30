@@ -22,7 +22,7 @@ runcmd:
 - aws configure set default.output text
 - ENVIRONMENT="${environment}"
 - ROLE="${role}"
-- FQDN=$ENVIRONMENT-$ROLE-$INSTANCE_ID.$DOMAIN
+- FQDN=$ENVIRONMENT-$INSTANCE_ID.$DOMAIN
 - hostname $FQDN
 - sed -i "s/#compress/compress/g" /etc/logrotate.conf
 - sed -i "s/HOSTNAME=localhost.localdomain/HOSTNAME=$FQDN/g" /etc/sysconfig/network

@@ -1,3 +1,3 @@
 # file: ansible/sites/vendo-test-site/group_vars/all.yml
 ---
-  root_db_password: "{{ vault_root_db_password }}"
+root_db_password: "{{ vault_root_db_password }}"
