@@ -1,10 +1,10 @@
 # An admin role in an AWS account in which to create the infrastructure
 variable "role_arn" {
-  default = "arn:aws:iam::948635675146:role/OrganizationAccountAccessRole"
+  default = ""
 }
 
 variable "region" {
-  default = "eu-west-1"
+  default = ""
 }
 
 variable "iac_repo_url" {
@@ -13,6 +13,9 @@ variable "iac_repo_url" {
 
 variable "ec2_key_name" {
   default = "vendo-dev"
+}
+variable "ec2_key_name_web" {
+  default = "web_servers"
 }
 
 variable "environment" {
